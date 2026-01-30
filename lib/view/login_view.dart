@@ -106,7 +106,7 @@ class _LoginViewState extends State<LoginView> {
 
                         WidgetsBinding.instance.addPostFrameCallback((_) {
                           if (value.loginResponse?.status == Status.COMPLETED) {
-                            Navigator.pushReplacementNamed(context, "home_view");
+                            Navigator.pushReplacementNamed(context, "landing_view");
                           }
 
                           if (value.loginResponse?.status == Status.ERROR) {

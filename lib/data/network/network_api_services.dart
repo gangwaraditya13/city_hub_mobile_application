@@ -8,6 +8,7 @@ import 'package:http/http.dart' as http;
 
 class NetworkApiServices extends BaseApiServices {
 
+  /// token auto set
   final TokenStorage _tokenStorage = TokenStorage();
 
   Future<Map<String, String>> _getHeaders({bool withAuth = false}) async {
@@ -104,16 +105,28 @@ class NetworkApiServices extends BaseApiServices {
   dynamic returnResponse(http.Response response) {
     switch (response.statusCode) {
       case 200:
-        return jsonDecode(response.body);
+      // API is OK, no body expected
+        if (response.body.isNotEmpty) {
+          return jsonDecode(response.body);
+        }
+        return null;
       case 201:
         if (response.body.isNotEmpty) {
           return jsonDecode(response.body);
         }
         return null;
       case 400:
-        throw BadRequestExecption("Body not passes properly");
+        throw BadRequestExecption("Bad Request");
+      case 401:
+        throw UnauthorizedException("Token invalid or expired");
+      case 403:
+        throw UnauthorizedException("Forbidden");
+      case 500:
+        throw FatchDataExecption("Internal Server Error");
       default:
-        throw FatchDataExecption("Url give status code ${response.statusCode}");
+        throw FatchDataExecption(
+            "Unexpected status code ${response.statusCode}");
     }
   }
+
 }

@@ -123,10 +123,10 @@ class _SignupViewState extends State<SignupView> {
                         ),
                         onTap: () {
                           if(_formKey.currentState!.validate()) {
-                            value.userFlowModel.name = _nameTextEditingController.text.toString();
-                            value.userFlowModel.phone = _phoneTextEditingController.text.toString();
-                            value.userFlowModel.idProof = _idProofTextEditingController.text.toString();
-                            value.userFlowModel.address = _addressTextEditingController.text.toString();
+                            value.userFlowModel.name = _nameTextEditingController.text.toString().trim();
+                            value.userFlowModel.phone = _phoneTextEditingController.text.toString().trim();
+                            value.userFlowModel.idProof = _idProofTextEditingController.text.toString().trim();
+                            value.userFlowModel.address = _addressTextEditingController.text.toString().trim();
                             Navigator.pushNamed(context, "signup2_view");
                           }
                         },

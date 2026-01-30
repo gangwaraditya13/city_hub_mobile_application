@@ -93,6 +93,8 @@ class ComplaintList {
   String? complaintDescription;
   String? complaintCategory;
   String? complaintStatus;
+  String? profilePhotoURL;
+  String? profileProductId;
   String? sId;
 
   ComplaintList(
@@ -101,6 +103,8 @@ class ComplaintList {
         this.complaintDescription,
         this.complaintCategory,
         this.complaintStatus,
+        this.profilePhotoURL,
+        this.profileProductId,
         this.sId});
 
   ComplaintList.fromJson(Map<String, dynamic> json) {
@@ -109,6 +113,8 @@ class ComplaintList {
     complaintDescription = json['complaintDescription'];
     complaintCategory = json['complaintCategory'];
     complaintStatus = json['complaintStatus'];
+    profilePhotoURL = json['profilePhotoURL'];
+    profileProductId = json['profileProductId'];
     sId = json['_id'];
   }
 
@@ -119,6 +125,8 @@ class ComplaintList {
     data['complaintDescription'] = this.complaintDescription;
     data['complaintCategory'] = this.complaintCategory;
     data['complaintStatus'] = this.complaintStatus;
+    data['profilePhotoURL'] = this.profilePhotoURL;
+    data['profileProductId'] = this.profileProductId;
     data['_id'] = this.sId;
     return data;
   }

@@ -19,3 +19,7 @@ class FatchDataExecption extends AppExceptions{
 class BadRequestExecption extends AppExceptions{
   BadRequestExecption([String? message]): super(message,"Invalid request");
 }
+
+class UnauthorizedException extends AppExceptions{
+  UnauthorizedException(String? message):super(message,"Invalid Auth");
+}

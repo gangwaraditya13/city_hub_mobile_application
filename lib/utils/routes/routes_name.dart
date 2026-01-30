@@ -1,5 +1,7 @@
 class RoutesName {
 
+  static const String Splash = "splash_view";
+
   //login route
   static const String login = "login_view";
 
@@ -12,7 +14,7 @@ class RoutesName {
   //signup3
   static const String signup3 = "signup3_view";
 
-  //home route
-  static const String home = "home_view";
+  //landing route
+  static const String landing = "landing_view";
 
 }

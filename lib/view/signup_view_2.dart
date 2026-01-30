@@ -149,8 +149,8 @@ class _SignupView2State extends State<SignupView2> {
                         ),
                         onTap: () {
                           if(_formKey.currentState!.validate()) {
-                            value.userFlowModel.email = _emailTextEditingController.text.toString();
-                            value.userFlowModel.password = _password1TextEditingController.text.toString();
+                            value.userFlowModel.email = _emailTextEditingController.text.toString().trim();
+                            value.userFlowModel.password = _password1TextEditingController.text.toString().trim();
                             value.userFlowModel.profilePhotoURL = "https://res.cloudinary.com/dx3wtw7pf/image/upload/v1756753309/def_profile_pic_nu8tlc.png";
                             value.userFlowModel.profileProductId = "";
                             Navigator.pushNamed(context, "signup3_view");

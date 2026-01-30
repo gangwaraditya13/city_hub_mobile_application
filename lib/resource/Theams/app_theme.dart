@@ -7,6 +7,7 @@ ThemeData lightMode = ThemeData(
     surface: AppColors.lightBackground,
     primary: AppColors.lightPrimary,
     secondary: AppColors.lightSecondary,
+
   )
 );
 

@@ -11,8 +11,9 @@ class TokenStorage {
     return prefs.getString("TOKEN");
   }
 
-  Future<void> clear() async {
+  Future<bool> clear() async {
     final prefs = await SharedPreferences.getInstance();
-    await prefs.remove("TOKEN");
+    var bool = await prefs.remove("TOKEN");
+    return bool;
   }
 }
