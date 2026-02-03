@@ -72,14 +72,16 @@ class _LoginViewState extends State<LoginView> {
                     lableText: "Password",
                     keybordType: .emailAddress,
                     obscureText: value,
-                    suffixIcon: IconButton(onPressed: (){
-                      if(_valueNotifier.value){
-                        _valueNotifier.value = false;
-                      }else{
-                        _valueNotifier.value = true;
-                      }
-                    },
-                        icon: Icon(value ?Icons.key: Icons.key_off)),
+                    suffixIcon: IconButton(
+                      onPressed: () {
+                        if (_valueNotifier.value) {
+                          _valueNotifier.value = false;
+                        } else {
+                          _valueNotifier.value = true;
+                        }
+                      },
+                      icon: Icon(value ? Icons.key : Icons.key_off),
+                    ),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return 'Password is required';
@@ -103,10 +105,12 @@ class _LoginViewState extends State<LoginView> {
                   children: [
                     Consumer<LoginViewModel>(
                       builder: (context, value, child) {
-
                         WidgetsBinding.instance.addPostFrameCallback((_) {
                           if (value.loginResponse?.status == Status.COMPLETED) {
-                            Navigator.pushReplacementNamed(context, "landing_view");
+                            Navigator.pushReplacementNamed(
+                              context,
+                              "landing_view",
+                            );
                           }
 
                           if (value.loginResponse?.status == Status.ERROR) {
@@ -117,30 +121,39 @@ class _LoginViewState extends State<LoginView> {
                           }
                         });
 
-                        final isLoading = value.loginResponse?.status == Status.LOADING;
+                        final isLoading =
+                            value.loginResponse?.status == Status.LOADING;
                         return CustomTextButton(
-                          onTap:isLoading
+                          onTap: isLoading
                               ? null
                               : () {
-                            if (_formKey.currentState!.validate()) {
-                              LoginRequestModel loginRequestModel =
-                                  LoginRequestModel(
-                                    email: _emailTextEditiongController.text
-                                        .toString().trim(),
-                                    password: _passwordTextEditiongController
-                                        .text
-                                        .toString().trim(),
-                                  );
+                                  if (_formKey.currentState!.validate()) {
+                                    LoginRequestModel loginRequestModel =
+                                        LoginRequestModel(
+                                          email: _emailTextEditiongController
+                                              .text
+                                              .toString()
+                                              .trim(),
+                                          password:
+                                              _passwordTextEditiongController
+                                                  .text
+                                                  .toString()
+                                                  .trim(),
+                                        );
 
-                              if (kDebugMode) {
-                                print(loginRequestModel.toJson());
-                              }
+                                    if (kDebugMode) {
+                                      print(loginRequestModel.toJson());
+                                    }
 
-                              value.login(loginRequestModel);
-                            }
-                          },
+                                    value.login(loginRequestModel);
+                                  }
+                                },
                           widget: isLoading
-                              ? CircularProgressIndicator(backgroundColor: Theme.of(context).colorScheme.secondary,)
+                              ? CircularProgressIndicator(
+                                  backgroundColor: Theme.of(
+                                    context,
+                                  ).colorScheme.secondary,
+                                )
                               : Text(
                                   "Login",
                                   style: TextStyle(
