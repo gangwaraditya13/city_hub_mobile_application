@@ -16,6 +16,8 @@ class _UserProfileViewState extends State<UserProfileView> {
   late UserProfileViewModel _profileViewModel;
   late UserViewModel _userViewModel;
 
+  ValueNotifier<bool> _valueNotifier = ValueNotifier(false);
+
   @override
   void initState() {
     _profileViewModel = context.read<UserProfileViewModel>();
@@ -98,12 +100,22 @@ class _UserProfileViewState extends State<UserProfileView> {
                   title: Text("Update Password"),
                   leading: Icon(Icons.password),
                 ),
-                ListTile(
-                  title: Text("Mode"),
-                  leading: Icon(Icons.dark_mode),
-                  trailing: IconButton(
-                    onPressed: () {},
-                    icon: Icon(Icons.toggle_on, size: 45),
+                ValueListenableBuilder(
+                  valueListenable: _valueNotifier,
+                  builder: (context, value, child) =>
+                  ListTile(
+                    title: Text("Mode"),
+                    leading: Icon(_valueNotifier.value ?Icons.dark_mode:Icons.light_mode),
+                    trailing: IconButton(
+                      onPressed: () {
+                        if(_valueNotifier.value){
+                          _valueNotifier.value = false;
+                        }else{
+                          _valueNotifier.value = true;
+                        }
+                      },
+                      icon: Icon(_valueNotifier.value ?Icons.toggle_on:Icons.toggle_off, size: 45),
+                    ),
                   ),
                 ),
                 ListTile(
