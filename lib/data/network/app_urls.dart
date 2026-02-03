@@ -1,17 +1,17 @@
 
 class AppUrls {
 
-  static String _baseUrl = "http://10.0.2.2:8080/cityhub";
+  static String _baseUrl = "https://smartcityinformationportal.onrender.com/cityhub";
 
   ///token validate
-  static String validateToken = "${_baseUrl}/public/validate-token";
+  static String validateToken = "${_baseUrl}/public/validate-token";//
 
   ///user auth
-  static String loginUrl = "${_baseUrl}/public/login";
-  static String signUpUrl = "${_baseUrl}/public/signup";
+  static String loginUrl = "${_baseUrl}/public/login";//
+  static String signUpUrl = "${_baseUrl}/public/signup";//
 
   ///user
-  static String userInfoDetailsUrl = "${_baseUrl}/user/getuser";
+  static String userInfoDetailsUrl = "${_baseUrl}/user/getuser";//
   static String ownCityInfoUrl = "${_baseUrl}/user/own-city-info";
   static String OtherCityInfoUrl = "${_baseUrl}/user/other-city-info";
   static String userDetailUpdateUrl = "${_baseUrl}/user/update-user";
@@ -39,10 +39,10 @@ class AppUrls {
   }
 
   static String searchCity(String cityHint){
-    return "${_baseUrl}/public/city/${cityHint}";
+    return "${_baseUrl}/public/city/${cityHint}";//
   }
 
   ///cityUpdates
-  static String getCityUpdate = "${_baseUrl}/user/city-updates";
+  static String getCityUpdate = "${_baseUrl}/user/city-updates";//
 
 }
