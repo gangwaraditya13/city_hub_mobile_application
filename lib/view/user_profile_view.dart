@@ -1,6 +1,7 @@
 import 'package:city_hub/data/response/status.dart';
 import 'package:city_hub/model_view/user_profile_view_model.dart';
 import 'package:city_hub/model_view/user_view_model.dart';
+import 'package:city_hub/view/widgets/Component/complaint_edit.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -119,6 +120,7 @@ class _UserProfileViewState extends State<UserProfileView> {
                   ),
                 ),
                 ListTile(
+                  ///making dialogBox
                   onTap: () {},
                   title: Text("App Owner Info"),
                   leading: Icon(Icons.info),
@@ -408,7 +410,10 @@ class _UserProfileViewState extends State<UserProfileView> {
                                     Padding(
                                       padding: const EdgeInsets.all(4.0),
                                       child: IconButton(
-                                        onPressed: () {},
+                                        ///complaint edit
+                                        onPressed: () {
+                                          showDialog(context: context, builder: (context) => PostEdit(imageUrl: displayImage,title: userComplaint[index].complaintTitle, category: userComplaint[index].complaintCategory,complaintToName: userComplaint[index].complaintToName,description: userComplaint[index].complaintDescription,),);
+                                        },
                                         icon: Icon(
                                           Icons.edit,
                                           color: Theme.of(
