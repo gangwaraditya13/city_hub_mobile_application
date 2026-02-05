@@ -1,4 +1,5 @@
 import 'package:city_hub/model_view/home_view_model.dart';
+import 'package:city_hub/model_view/image_view_model.dart';
 import 'package:city_hub/model_view/login_view_model.dart';
 import 'package:city_hub/model_view/signup_view_model.dart';
 import 'package:city_hub/model_view/token_view_model.dart';
@@ -27,6 +28,7 @@ class MyApp extends StatelessWidget {
       ChangeNotifierProvider(create: (_) => UserProfileViewModel()),
       ChangeNotifierProvider(create: (_) => HomeViewModel()),
       ChangeNotifierProvider(create: (_) => UserViewModel()),
+      ChangeNotifierProvider(create: (_) => ImageViewModel()),
     ],child: MaterialApp(
       title: 'CityHub',
       theme: lightMode,

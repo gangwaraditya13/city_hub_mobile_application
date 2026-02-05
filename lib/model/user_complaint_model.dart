@@ -4,6 +4,8 @@ class UserComplaintModel {
   String? complaintDescription;
   String? complaintCategory;
   String? complaintStatus;
+  String? profilePhotoURL;
+  String? profileProductId;
   String? sId;
 
   UserComplaintModel(
@@ -12,6 +14,8 @@ class UserComplaintModel {
         this.complaintDescription,
         this.complaintCategory,
         this.complaintStatus,
+        this.profilePhotoURL,
+        this.profileProductId,
         this.sId});
 
   UserComplaintModel.fromJson(Map<String, dynamic> json) {
@@ -20,6 +24,8 @@ class UserComplaintModel {
     complaintDescription = json['complaintDescription'];
     complaintCategory = json['complaintCategory'];
     complaintStatus = json['complaintStatus'];
+    profilePhotoURL = json['profilePhotoURL'];
+    profileProductId = json['profileProductId'];
     sId = json['_id'];
   }
 
@@ -29,6 +35,8 @@ class UserComplaintModel {
     data['complaintTitle'] = this.complaintTitle;
     data['complaintDescription'] = this.complaintDescription;
     data['complaintCategory'] = this.complaintCategory;
+    data['profilePhotoURL'] = this.profilePhotoURL;
+    data['profileProductId'] = this.profileProductId;
     return data;
   }
 
@@ -37,6 +45,8 @@ class UserComplaintModel {
     data['id'] = this.sId;
     data['title'] = this.complaintTitle;
     data['description'] = this.complaintDescription;
+    data['profilePhotoURL'] = this.profilePhotoURL;
+    data['profileProductId'] = this.profileProductId;
     return data;
   }
 

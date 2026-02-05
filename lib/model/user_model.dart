@@ -75,6 +75,13 @@ class UserModel {
 
   Map<String, dynamic> toJsonUpdatePassword() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['profilePhotoURL'] = this.profilePhotoURL;
+    data['profileProductId'] = this.profileProductId;
+    return data;
+  }
+
+  Map<String, dynamic> toJsonUpdateProfilePic() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
     data['oldPassword'] = this.password;
     data['newPassword'] = this.newPassword;
     return data;

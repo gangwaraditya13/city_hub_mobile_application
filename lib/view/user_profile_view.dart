@@ -1,7 +1,11 @@
 import 'package:city_hub/data/response/status.dart';
 import 'package:city_hub/model_view/user_profile_view_model.dart';
 import 'package:city_hub/model_view/user_view_model.dart';
+import 'package:city_hub/view/widgets/Component/app_owner_info.dart';
 import 'package:city_hub/view/widgets/Component/complaint_edit.dart';
+import 'package:city_hub/view/widgets/Component/edit_user_detail.dart';
+import 'package:city_hub/view/widgets/Component/edit_user_profile_pic.dart';
+import 'package:city_hub/view/widgets/Component/update_password.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -28,6 +32,13 @@ class _UserProfileViewState extends State<UserProfileView> {
     });
     super.initState();
   }
+
+  @override
+  void dispose() {
+    _valueNotifier.dispose();
+    super.dispose();
+  }
+
 
   Future<void> onPressesLogout() async {
     final cleared = await _profileViewModel.logout();
@@ -85,43 +96,71 @@ class _UserProfileViewState extends State<UserProfileView> {
             Column(
               children: [
                 DrawerHeader(
-                  child: CircleAvatar(
-                    radius: 50,
-                    backgroundColor: Theme.of(context).colorScheme.secondary,
+                  child: Consumer<UserViewModel>(
+                    builder: (context, value, child) {
+                      final imageProfilePic =
+                          value.apiUserModelResponse?.data?.profilePhotoURL;
+
+                      final profilePic =
+                          (imageProfilePic == null || imageProfilePic.isEmpty)
+                          ? "https://media.istockphoto.com/id/2151669184/vector/vector-flat-illustration-in-grayscale-avatar-user-profile-person-icon-gender-neutral.jpg"
+                          : imageProfilePic;
+
+                      return CircleAvatar(
+                        radius: MediaQuery.of(context).size.height * 0.067,
+                        backgroundColor: Theme.of(
+                          context,
+                        ).colorScheme.secondary,
+                        foregroundImage: NetworkImage(profilePic),
+                      );
+                    },
                   ),
                 ),
-
                 ListTile(
-                  onTap: () {},
-                  title: Text("Update Gmail"),
-                  leading: Icon(Icons.g_mobiledata),
-                ),
-                ListTile(
-                  onTap: () {},
+                  onTap: () {
+                    showDialog(
+                      context: context,
+                      builder: (context) => UpdatePassword(),
+                    );
+                  },
                   title: Text("Update Password"),
                   leading: Icon(Icons.password),
                 ),
                 ValueListenableBuilder(
                   valueListenable: _valueNotifier,
-                  builder: (context, value, child) =>
-                  ListTile(
+                  builder: (context, value, child) => ListTile(
                     title: Text("Mode"),
-                    leading: Icon(_valueNotifier.value ?Icons.dark_mode:Icons.light_mode),
+                    leading: Icon(
+                      _valueNotifier.value ? Icons.dark_mode : Icons.light_mode,
+                    ),
                     trailing: IconButton(
                       onPressed: () {
-                        if(_valueNotifier.value){
+                        if (_valueNotifier.value) {
                           _valueNotifier.value = false;
-                        }else{
+                        } else {
                           _valueNotifier.value = true;
                         }
                       },
-                      icon: Icon(_valueNotifier.value ?Icons.toggle_on:Icons.toggle_off, size: 45),
+                      icon: Icon(
+                        _valueNotifier.value
+                            ? Icons.toggle_on
+                            : Icons.toggle_off,
+                        size: 45,
+                      ),
                     ),
                   ),
                 ),
                 ListTile(
                   ///making dialogBox
-                  onTap: () {},
+                  onTap: () {
+                    Navigator.pop(context); // close drawer
+                    showModalBottomSheet(
+                      context: context,
+                      backgroundColor: Colors.transparent,
+                      isScrollControlled: true,
+                      builder: (context) => const AppOwnerInfo(),
+                    );
+                  },
                   title: Text("App Owner Info"),
                   leading: Icon(Icons.info),
                 ),
@@ -154,7 +193,7 @@ class _UserProfileViewState extends State<UserProfileView> {
               );
             }
             if (userDetail.status == Status.ERROR) {
-              return Center(child: Text("${userDetail.message} <NOT FOUND>"));
+              return Center(child: Text("NOT FOUND"));
             }
             return Padding(
               padding: const EdgeInsets.all(8.0),
@@ -164,9 +203,14 @@ class _UserProfileViewState extends State<UserProfileView> {
                   Column(
                     children: [
                       GestureDetector(
-                        onLongPress: () {},
+                        onLongPress: () {
+                          showDialog(
+                            context: context,
+                            builder: (context) => EditUserProfilePic(),
+                          );
+                        },
                         child: CircleAvatar(
-                          radius: 55,
+                          radius: MediaQuery.of(context).size.height * 0.07,
                           backgroundColor: Theme.of(
                             context,
                           ).colorScheme.secondary,
@@ -248,7 +292,18 @@ class _UserProfileViewState extends State<UserProfileView> {
                                 ],
                               ),
                               IconButton(
-                                onPressed: () {},
+                                ///edit user detail
+                                onPressed: () {
+                                  showDialog(
+                                    context: context,
+                                    builder: (context) => EditUserDetail(
+                                      name: userDetail.data!.name,
+                                      email: userDetail.data!.email,
+                                      phone: userDetail.data!.phone,
+                                      address: userDetail.data!.address,
+                                    ),
+                                  );
+                                },
                                 icon: Icon(
                                   Icons.edit,
                                   color: Theme.of(context).colorScheme.primary,
@@ -412,7 +467,26 @@ class _UserProfileViewState extends State<UserProfileView> {
                                       child: IconButton(
                                         ///complaint edit
                                         onPressed: () {
-                                          showDialog(context: context, builder: (context) => PostEdit(imageUrl: displayImage,title: userComplaint[index].complaintTitle, category: userComplaint[index].complaintCategory,complaintToName: userComplaint[index].complaintToName,description: userComplaint[index].complaintDescription,),);
+                                          showDialog(
+                                            context: context,
+                                            builder: (context) => PostEdit(
+                                              complaintId: userComplaint[index]
+                                                  .sId,
+                                              imageUrl: userComplaint[index]
+                                                  .profilePhotoURL,
+                                              title: userComplaint[index]
+                                                  .complaintTitle,
+                                              category: userComplaint[index]
+                                                  .complaintCategory,
+                                              complaintToName:
+                                                  userComplaint[index]
+                                                      .complaintToName,
+                                              description: userComplaint[index]
+                                                  .complaintDescription,
+                                              imageId: userComplaint[index]
+                                                  .profileProductId,
+                                            ),
+                                          );
                                         },
                                         icon: Icon(
                                           Icons.edit,
