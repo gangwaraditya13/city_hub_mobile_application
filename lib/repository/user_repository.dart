@@ -4,6 +4,7 @@ import 'package:city_hub/data/network/base_api_services.dart';
 import 'package:city_hub/data/network/network_api_services.dart';
 import 'package:city_hub/model/user_complaint_model.dart';
 import 'package:city_hub/model/user_model.dart';
+import 'package:flutter/cupertino.dart';
 
 class UserRepository {
   final BaseApiServices _baseApiServices = NetworkApiServices();
@@ -43,11 +44,12 @@ class UserRepository {
   
   Future<dynamic> updateUserComplaint(UserComplaintModel complaintModel)async{
     try{
-      final response = await _baseApiServices.getPutApiResponse(AppUrls.updateComplaintUrl, complaintModel.toJsonUpdate());
+      final response = await _baseApiServices.getPutApiResponse(AppUrls.updateComplaintUrl, complaintModel.toJsonUpdate(), withAuth: true);
       return response;
     }on AppExceptions{
       rethrow;
     }catch(e){
+      debugPrint("UPDATE COMPLAINT ERROR 👉 $e");
       throw Exception("unable to update complaint");
     }
   }

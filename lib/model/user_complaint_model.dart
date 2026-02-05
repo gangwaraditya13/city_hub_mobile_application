@@ -45,8 +45,8 @@ class UserComplaintModel {
     data['id'] = this.sId;
     data['title'] = this.complaintTitle;
     data['description'] = this.complaintDescription;
-    data['profilePhotoURL'] = this.profilePhotoURL;
-    data['profileProductId'] = this.profileProductId;
+    data['profilePhotoURL'] = this.profilePhotoURL ?? "";
+    data['profileProductId'] = this.profileProductId ?? "";
     return data;
   }
 

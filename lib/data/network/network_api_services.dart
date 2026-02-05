@@ -92,7 +92,7 @@ class NetworkApiServices extends BaseApiServices {
     dynamic responseJson;
     try {
       final headers = await _getHeaders(withAuth: withAuth);
-      dynamic response = http
+      dynamic response = await http
           .put(Uri.parse(url), body: jsonEncode(body),headers: headers,)
           .timeout(Duration(seconds: 10));
       responseJson = returnResponse(response);

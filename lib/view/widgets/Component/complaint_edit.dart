@@ -1,6 +1,4 @@
-import 'package:city_hub/data/enums/utility_complaint_type.dart';
 import 'package:city_hub/data/response/status.dart';
-import 'package:city_hub/model/cloudinary_image_model.dart';
 import 'package:city_hub/model/user_complaint_model.dart';
 import 'package:city_hub/model_view/image_view_model.dart';
 import 'package:city_hub/model_view/user_view_model.dart';
@@ -67,10 +65,6 @@ class _PostEditState extends State<PostEdit> {
 
   Future<void> _submitUpdate(UserViewModel value)async{
     if(_selectedImage != null){
-      if(_titleTextEditingController.text.trim().toString() == widget.title && _descriptionTextEditingController.text.trim().toString() == widget.description){
-        Navigator.pop(context);
-      }
-      else {
         ///uploading image
         await _imageViewModel.uploadImage(_selectedImage!);
         if (_imageViewModel.apiCloudinaryImageResponse!
@@ -94,7 +88,6 @@ class _PostEditState extends State<PostEdit> {
             Navigator.pop(context);
           }
         }
-      }
     }
     if(_selectedImage == null && _globalKeyTitle.currentState!.validate() && _globalKeyDescription.currentState!.validate()){
       if(_titleTextEditingController.text.trim().toString() == widget.title && _descriptionTextEditingController.text.trim().toString() == widget.description){
@@ -105,9 +98,9 @@ class _PostEditState extends State<PostEdit> {
           profileProductId: widget.imageId,
           profilePhotoURL: widget.imageUrl,
           complaintTitle: _titleTextEditingController.text
-              .trim().toString(),
+              .trim(),
           complaintDescription: _descriptionTextEditingController
-              .text.trim().toString(),
+              .text.trim(),
           sId: widget.complaintId,
         );
 
@@ -244,7 +237,7 @@ class _PostEditState extends State<PostEdit> {
                               image: DecorationImage(
                                 image: _selectedImage != null
                                     ? FileImage(_selectedImage!) as ImageProvider
-                                    :(widget.imageUrl != null
+                                    :(widget.imageUrl!.isNotEmpty
                                     ? NetworkImage(widget.imageUrl!)
                                     : NetworkImage("https://imgs.search.brave.com/7PhHNvqYShphnIgWBlWDtBp2tYpkl8Cxx5gu_QZgVWw/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9wcm9v/ZmVkLmNvbS93cC1j/b250ZW50L3VwbG9h/ZHMvMjAyMS8xMC83/LUdyYXBoaWMtV29y/ZC1DaG9pY2UtQ29t/cGxhY2VudC12cy4t/Q29tcGxhaXNhbnQu/cG5n")),
                                 fit: BoxFit.cover,
@@ -358,7 +351,7 @@ class _PostEditState extends State<PostEdit> {
                       children: [
                         Text("Some thing went wrong", style: TextStyle(color: Colors.red),),
                         IconButton(
-                          ///save and pop context
+                          ///retry and pop context
                           onPressed: () => _submitUpdate(value),
                           icon: Icon(
                             Icons.refresh,
