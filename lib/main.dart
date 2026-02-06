@@ -1,3 +1,4 @@
+import 'package:city_hub/model_view/facility_view_model.dart';
 import 'package:city_hub/model_view/home_view_model.dart';
 import 'package:city_hub/model_view/image_view_model.dart';
 import 'package:city_hub/model_view/login_view_model.dart';
@@ -28,8 +29,9 @@ class MyApp extends StatelessWidget {
       ChangeNotifierProvider(create: (_) => UserProfileViewModel()),
       ChangeNotifierProvider(create: (_) => HomeViewModel()),
       ChangeNotifierProvider(create: (_) => UserViewModel()),
-      ChangeNotifierProvider(create: (_) => ImageViewModel()),
+      ChangeNotifierProvider(create: (_) => FacilityViewModel()),
     ],child: MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'CityHub',
       theme: lightMode,
       darkTheme: darkMode,

@@ -11,6 +11,7 @@ class UserViewModel with ChangeNotifier{
   ApiResponse<UserModel>? apiUserModelResponse;
   ApiResponse<void>? apiUpdateUserModelResponse;
   ApiResponse<void>? apiUpdateUserComplaintResponse;
+  ApiResponse<void>? apiDeleteUserComplaintResponse;
   ApiResponse<void>? apiUpdateUserModelProfilePicResponse;
   ApiResponse<void>? apiUpdateUserModelPasswordResponse;
 
@@ -77,6 +78,23 @@ class UserViewModel with ChangeNotifier{
       apiUpdateUserModelPasswordResponse = ApiResponse.error(e.toString());
       notifyListeners();
     }
+  }
+
+  Future<void> deleteUserComplaint(String complaintId)async{
+    apiDeleteUserComplaintResponse = ApiResponse.loading();
+    notifyListeners();
+    try{
+      await _userRepository.deleteComplaint(complaintId);
+      apiDeleteUserComplaintResponse = ApiResponse.completed(null);
+      notifyListeners();
+    }catch(e){
+      apiDeleteUserComplaintResponse = ApiResponse.error(e.toString());
+      notifyListeners();
+    }
+  }
+
+  Future<void> reloadUserDetail()async{
+    await getUserDetail();
   }
 
 }

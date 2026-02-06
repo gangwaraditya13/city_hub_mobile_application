@@ -1,5 +1,6 @@
 import 'package:city_hub/data/response/status.dart';
 import 'package:city_hub/model_view/home_view_model.dart';
+import 'package:city_hub/view/widgets/Component/new_complaint.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -219,119 +220,147 @@ class _HomeviewState extends State<Homeview> {
                   },
                 ),
               ),
-              const SizedBox(height: 10),
               Container(
-                height: MediaQuery.of(context).size.height * 0.20,
+                height: MediaQuery.of(context).size.height * 0.15,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(12),
                 ),
               ),
-              const SizedBox(height: 10),
-              Container(
-                height: MediaQuery.of(context).size.height * 0.32,
-                decoration: BoxDecoration(
-                  color: Theme.of(context).colorScheme.secondary,
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child: Consumer<HomeViewModel>(builder: (context, value, child) {
-                  final userDetail = value.apiUserDetailResponse;
-                  if(userDetail == null || userDetail.status == Status.LOADING){
-                    return Center(child: CircularProgressIndicator());
-                  }
-                  if(userDetail.status == Status.ERROR){
-                    return Center(child: Text("NOT FOUND"));
-                  }
-                  final complaint = userDetail.data?.complaintList ?? [];
-                  return Padding(
+              Column(
+                crossAxisAlignment: .end,
+                children: [
+                  Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: Column(
-                      crossAxisAlignment: .end,
-                      children: [
-                        Container(
-                          height: MediaQuery.of(context).size.height * 0.30,
-                          child: ListView.builder(
-                            itemBuilder: (context, index) {
-                              final image = complaint[index].profilePhotoURL;
-                              final displayImage = (image == null || image.isEmpty)
-                                  ? "https://imgs.search.brave.com/7PhHNvqYShphnIgWBlWDtBp2tYpkl8Cxx5gu_QZgVWw/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9wcm9v/ZmVkLmNvbS93cC1j/b250ZW50L3VwbG9h/ZHMvMjAyMS8xMC83/LUdyYXBoaWMtV29y/ZC1DaG9pY2UtQ29t/cGxhY2VudC12cy4t/Q29tcGxhaXNhbnQu/cG5n"
-                                  : image;
+                    child: Container(
+                      width: MediaQuery.of(context).size.width/2.945,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(12),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Theme.of(context).colorScheme.secondary,
+                              blurRadius: 8,
+                              offset: Offset(-2, 3)
+                          )
+                        ]
+                      ),
+                      child: IconButton(onPressed: (){
+                        showDialog(context: context, builder: (context) => NewComplaint(),);
+                      }, icon: Row(
+                        mainAxisAlignment: .spaceBetween,
+                        children: [
+                          Text("New Complaint",style: TextStyle(color: Theme.of(context).colorScheme.primary),),
+                          Icon(Icons.add,),
+                        ],
+                      )),
+                    ),
+                  ),
+                  Container(
+                    height: MediaQuery.of(context).size.height * 0.32,
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).colorScheme.secondary,
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: Consumer<HomeViewModel>(builder: (context, value, child) {
+                      final userDetail = value.apiUserDetailResponse;
+                      if(userDetail == null || userDetail.status == Status.LOADING){
+                        return Center(child: CircularProgressIndicator());
+                      }
+                      if(userDetail.status == Status.ERROR){
+                        return Center(child: Text("NOT FOUND"));
+                      }
+                      final complaint = userDetail.data?.complaintList ?? [];
+                      return Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Column(
+                          crossAxisAlignment: .end,
+                          children: [
+                            Container(
+                              height: MediaQuery.of(context).size.height * 0.30,
+                              child: ListView.builder(
+                                itemBuilder: (context, index) {
+                                  final image = complaint[index].profilePhotoURL;
+                                  final displayImage = (image == null || image.isEmpty)
+                                      ? "https://imgs.search.brave.com/7PhHNvqYShphnIgWBlWDtBp2tYpkl8Cxx5gu_QZgVWw/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9wcm9v/ZmVkLmNvbS93cC1j/b250ZW50L3VwbG9h/ZHMvMjAyMS8xMC83/LUdyYXBoaWMtV29y/ZC1DaG9pY2UtQ29t/cGxhY2VudC12cy4t/Q29tcGxhaXNhbnQu/cG5n"
+                                      : image;
 
 
-                            return Padding(
-                              padding: const EdgeInsets.only(bottom: 8.0),
-                              child: Container(
-                                height: MediaQuery.of(context).size.height * 0.30,
-                                decoration: BoxDecoration(
-                                  color: Theme.of(context).colorScheme.surface,
-                                  borderRadius: BorderRadius.circular(12),
-                                ),
-                                child: Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Column(
-                                    crossAxisAlignment: .start,
-                                    children: [
-                                      Row(
-                                        mainAxisAlignment: .spaceBetween,
+                                return Padding(
+                                  padding: const EdgeInsets.only(bottom: 8.0),
+                                  child: Container(
+                                    height: MediaQuery.of(context).size.height * 0.30,
+                                    decoration: BoxDecoration(
+                                      color: Theme.of(context).colorScheme.surface,
+                                      borderRadius: BorderRadius.circular(12),
+                                    ),
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Column(
+                                        crossAxisAlignment: .start,
                                         children: [
-                                          Text("${complaint[index].complaintCategory}",style: TextStyle(color: Theme.of(context).colorScheme.primary),),
                                           Row(
+                                            mainAxisAlignment: .spaceBetween,
                                             children: [
-                                              Text("${complaint[index].complaintStatus}",style: TextStyle(color: Theme.of(context).colorScheme.primary),),
-                                              Padding(
-                                                padding: const EdgeInsets.only(left: 5.0),
-                                                child: Container(
-                                                  height: 15,
-                                                  width: 15,
-                                                  decoration: BoxDecoration(
-                                                    color: complaint[index].complaintStatus.toString() == "PENDING"?Colors.red:Colors.green,
-                                                    borderRadius: BorderRadius.circular(50),
+                                              Text("${complaint[index].complaintCategory}",style: TextStyle(color: Theme.of(context).colorScheme.primary),),
+                                              Row(
+                                                children: [
+                                                  Text("${complaint[index].complaintStatus}",style: TextStyle(color: Theme.of(context).colorScheme.primary),),
+                                                  Padding(
+                                                    padding: const EdgeInsets.only(left: 5.0),
+                                                    child: Container(
+                                                      height: 15,
+                                                      width: 15,
+                                                      decoration: BoxDecoration(
+                                                        color: complaint[index].complaintStatus.toString() == "PENDING"?Colors.red:Colors.green,
+                                                        borderRadius: BorderRadius.circular(50),
+                                                        ),
                                                     ),
-                                                ),
+                                                  )
+                                                ],
                                               )
                                             ],
-                                          )
-                                        ],
-                                      ),
-                                      Row(
-                                        children: [
-                                          Padding(
-                                            padding: const EdgeInsets.all(8.0),
-                                            child: Container(
-                                              height: MediaQuery.of(context).size.height * 0.12,
-                                              width: MediaQuery.of(context).size.width * 0.4,
-                                              decoration: BoxDecoration(
-                                                borderRadius: BorderRadius.circular(12),
-                                                image: DecorationImage(image: NetworkImage(displayImage),fit: BoxFit.cover),
-                                              ),
-                                            ),
                                           ),
-                                          Column(
-                                            crossAxisAlignment: .start,
+                                          Row(
                                             children: [
                                               Padding(
-                                                padding: const EdgeInsets.only(bottom: 8.0),
-                                                child: Text("${complaint[index].complaintTitle}",style: TextStyle(color: Theme.of(context).colorScheme.primary, decorationStyle: TextDecorationStyle.wavy),),
+                                                padding: const EdgeInsets.all(8.0),
+                                                child: Container(
+                                                  height: MediaQuery.of(context).size.height * 0.12,
+                                                  width: MediaQuery.of(context).size.width * 0.4,
+                                                  decoration: BoxDecoration(
+                                                    borderRadius: BorderRadius.circular(12),
+                                                    image: DecorationImage(image: NetworkImage(displayImage),fit: BoxFit.cover),
+                                                  ),
+                                                ),
                                               ),
-                                              Text("To, ${complaint[index].complaintToName}",style: TextStyle(color: Theme.of(context).colorScheme.primary),)
+                                              Column(
+                                                crossAxisAlignment: .start,
+                                                children: [
+                                                  Padding(
+                                                    padding: const EdgeInsets.only(bottom: 8.0),
+                                                    child: Text("${complaint[index].complaintTitle}",style: TextStyle(color: Theme.of(context).colorScheme.primary, decorationStyle: TextDecorationStyle.wavy),),
+                                                  ),
+                                                  Text("To, ${complaint[index].complaintToName}",style: TextStyle(color: Theme.of(context).colorScheme.primary),)
+                                                ],
+                                              )
                                             ],
-                                          )
+                                          ),
+                                          Text("${complaint[index].complaintDescription}",style: TextStyle(color: Theme.of(context).colorScheme.primary),)
                                         ],
                                       ),
-                                      Text("${complaint[index].complaintDescription}",style: TextStyle(color: Theme.of(context).colorScheme.primary),)
-                                    ],
+                                    ),
                                   ),
-                                ),
+                                );
+                              },
+                              itemCount: complaint.length,
+                                scrollDirection: Axis.vertical,
                               ),
-                            );
-                          },
-                          itemCount: complaint.length,
-                            scrollDirection: Axis.vertical,
-                          ),
+                            ),
+                          ],
                         ),
-                      ],
-                    ),
-                  );
-                },),
+                      );
+                    },),
+                  ),
+                ],
               ),
             ],
           ),

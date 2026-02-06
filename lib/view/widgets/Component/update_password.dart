@@ -1,6 +1,10 @@
+import 'package:city_hub/data/response/status.dart';
+import 'package:city_hub/model/user_model.dart';
+import 'package:city_hub/model_view/user_view_model.dart';
 import 'package:city_hub/view/widgets/Component/user_input_text_feald.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class UpdatePassword extends StatefulWidget {
   const UpdatePassword({super.key});
@@ -17,7 +21,16 @@ class _UpdatePasswordState extends State<UpdatePassword> {
 
   final GlobalKey<FormState> _globalKey = GlobalKey();
 
+  late UserViewModel _userViewModel;
+
   ValueNotifier<bool> _valueNotifier = ValueNotifier(true);
+
+
+  @override
+  void initState() {
+    _userViewModel = context.read<UserViewModel>();
+    super.initState();
+  }
 
   @override
   void dispose() {
@@ -25,6 +38,20 @@ class _UpdatePasswordState extends State<UpdatePassword> {
     super.dispose();
   }
 
+  Future<void> _onTapSubmit(UserViewModel value)async{
+    if(_globalKey.currentState!.validate()) {
+      UserModel data = UserModel(
+        password: _oldPasswordtextEditingController.text.trim(),
+        newPassword: _newPasswordtextEditingController.text.trim()
+      );
+
+      await value.updateUserPassword(data);
+
+      if(value.apiUpdateUserModelPasswordResponse?.status == Status.COMPLETED) {
+        Navigator.pop(context);
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -140,19 +167,41 @@ class _UpdatePasswordState extends State<UpdatePassword> {
                       }, icon: _valueNotifier.value?Icon(Icons.key):Icon(Icons.key_off)),
                     ),
                   ),
-                  IconButton(onPressed:
-                  ///save and pop
-                      (){
-                    if(_globalKey.currentState!.validate()) {
-                      Navigator.pop(context);
+                  Consumer<UserViewModel>(
+                    builder: (context, value, child) {
+
+                      if(value.apiUpdateUserModelPasswordResponse?.status == Status.LOADING){
+                        return const CircularProgressIndicator();
+                      }
+
+                      if(value.apiUpdateUserModelPasswordResponse?.status == Status.ERROR){
+                        return Row(
+                          children: [
+                            Text("Some thing went wrong", style: TextStyle(color: Colors.red),),
+                            IconButton(
+                              ///save and pop
+                              onPressed: () => _onTapSubmit(value),
+                              icon: Icon(
+                                Icons.refresh,
+                                color: Theme.of(
+                                  context,
+                                ).colorScheme.primary,
+                              ),),
+                          ],
+                        );
+                      }
+
+                      return IconButton(
+                      ///save and pop
+                        onPressed: () => _onTapSubmit(value),
+                        icon: Icon(
+                          Icons.done_outline,
+                          color: Theme.of(
+                            context,
+                          ).colorScheme.primary,
+                        ),);
                     }
-                  },
-                    icon: Icon(
-                      Icons.done_outline,
-                      color: Theme.of(
-                        context,
-                      ).colorScheme.primary,
-                    ),)
+                  )
                 ],
               ),
             ),

@@ -64,5 +64,16 @@ class UserRepository {
       throw Exception("unable to update profile pic");
     }
   }
+  
+  Future<dynamic> deleteComplaint(String complaintId)async{
+    try{
+      final response = await _baseApiServices.getDeleteApiResponse(AppUrls.deleteComplaint(complaintId),withAuth: true);
+      return response;
+    }on AppExceptions{
+      rethrow;
+    }catch(e){
+      throw Exception("unable to delete Complaint");
+    }
+  }
 
 }

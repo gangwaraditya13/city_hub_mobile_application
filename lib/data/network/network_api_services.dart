@@ -28,8 +28,7 @@ class NetworkApiServices extends BaseApiServices {
 
   @override
   Future<dynamic> getDeleteApiResponse(
-    String url,
-    String password, {
+    String url, {
     bool withAuth = false,
   }) async {
     dynamic responseJson;

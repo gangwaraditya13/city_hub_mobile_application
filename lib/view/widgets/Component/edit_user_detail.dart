@@ -1,6 +1,10 @@
+import 'package:city_hub/data/response/status.dart';
+import 'package:city_hub/model/user_model.dart';
+import 'package:city_hub/model_view/user_view_model.dart';
 import 'package:city_hub/view/widgets/Component/user_input_text_feald.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class EditUserDetail extends StatefulWidget {
 
@@ -22,14 +26,17 @@ class _EditUserDetailState extends State<EditUserDetail> {
   late TextEditingController _phoneTextEditingController;
   late TextEditingController _addressTextEditingController;
   final GlobalKey<FormState> _globalKey = GlobalKey();
+  late UserViewModel _userViewModel;
 
   @override
   void initState() {
 
     _nameTextEditingController = TextEditingController(text: widget.name);
     _emailTextEditingController = TextEditingController(text: widget.email);
-    _phoneTextEditingController = TextEditingController(text: "+91${widget.phone}");
+    _phoneTextEditingController = TextEditingController(text: widget.phone);
     _addressTextEditingController = TextEditingController(text: widget.address);
+    _userViewModel = context.read<UserViewModel>();
+
     super.initState();
   }
 
@@ -39,6 +46,32 @@ class _EditUserDetailState extends State<EditUserDetail> {
     _phoneTextEditingController.dispose();
     _addressTextEditingController.dispose();
     super.dispose();
+  }
+
+  Future<void> _onTapSubmit(UserViewModel value)async{
+    if(_globalKey.currentState!.validate()){
+
+      if(_nameTextEditingController.text.trim() != widget.name
+          || _emailTextEditingController.text.trim() != widget.email
+          || _phoneTextEditingController.text.trim() != widget.phone
+          || _addressTextEditingController.text.trim() != widget.address){
+
+        UserModel data = UserModel(
+            name: _nameTextEditingController.text.trim(),
+            email: _emailTextEditingController.text.trim(),
+            phone: _phoneTextEditingController.text.trim(),
+            address: _addressTextEditingController.text.trim()
+        );
+
+        await value.updateUserDetails(data);
+
+        if(value.apiUpdateUserModelResponse?.status == Status.COMPLETED){
+          Navigator.pop(context);
+        }
+      }else{
+        Navigator.pop(context);
+      }
+    }
   }
 
   @override
@@ -119,18 +152,41 @@ class _EditUserDetailState extends State<EditUserDetail> {
                     },
                   ),
                 ),
-                IconButton(
-                  ///save and pop context
-                  onPressed: (){
-                  if(_globalKey.currentState!.validate()){
-                    Navigator.pop(context);
-                  }
-                }, icon: Icon(
-                  Icons.done_outline,
-                  color: Theme.of(
-                    context,
-                  ).colorScheme.primary,
-                ),)
+                Consumer<UserViewModel>(
+                  builder: (context, value, child) {
+
+                    if(value.apiUpdateUserModelResponse?.status == Status.LOADING){
+                      return const CircularProgressIndicator();
+                    }
+                    if(value.apiUpdateUserModelResponse?.status == Status.ERROR){
+                      return Row(
+                        mainAxisAlignment: .end,
+                        children: [
+                          Text("Some thing went wrong",style: TextStyle(color: Colors.red),),
+                          IconButton(
+                            ///save and pop context
+                            onPressed: () => _onTapSubmit(value),
+                            icon: Icon(
+                              Icons.refresh,
+                              color: Theme.of(
+                                context,
+                              ).colorScheme.primary,
+                            ),),
+                        ],
+                      );
+                    }
+
+                    return IconButton(
+                      ///save and pop context
+                      onPressed: () => _onTapSubmit(value),
+                      icon: Icon(
+                      Icons.done_outline,
+                      color: Theme.of(
+                        context,
+                      ).colorScheme.primary,
+                    ),);
+                  },
+                )
               ],
             ),
           ),

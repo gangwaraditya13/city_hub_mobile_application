@@ -1,5 +1,6 @@
 import 'package:city_hub/data/response/api_response.dart';
 import 'package:city_hub/model/city_updates_model.dart';
+import 'package:city_hub/model/user_complaint_model.dart';
 import 'package:city_hub/model/user_model.dart';
 import 'package:city_hub/repository/home_repository.dart';
 import 'package:flutter/cupertino.dart';
@@ -11,6 +12,7 @@ class HomeViewModel with  ChangeNotifier {
 
   ApiResponse<UserModel>? apiUserDetailResponse;
   ApiResponse<CityUpdates>? apiCityUpdatesResponse;
+  ApiResponse<void>? apiNewComplaintResponse;
 
   Future<void> getUserDetail()async{
     apiUserDetailResponse = ApiResponse.loading();
@@ -44,6 +46,20 @@ class HomeViewModel with  ChangeNotifier {
   Future<void> reloadHome() async {
     await getUserDetail();
     await getCityUpdates();
+  }
+
+
+  Future<void> newComplaint(UserComplaintModel complaintModel)async{
+    apiNewComplaintResponse = ApiResponse.loading();
+    notifyListeners();
+    try{
+      await _homeRepository.postNewComplaint(complaintModel);
+      apiNewComplaintResponse = ApiResponse.completed(null);
+      notifyListeners();
+    }catch(e){
+      apiNewComplaintResponse = ApiResponse.error(e.toString());
+      notifyListeners();
+    }
   }
 
 }

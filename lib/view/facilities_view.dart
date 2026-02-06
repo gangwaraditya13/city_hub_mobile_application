@@ -17,7 +17,9 @@ class _FacilitiesViewState extends State<FacilitiesView> {
         centerTitle: true,
       ),
       body: SafeArea(child: Column(
+        children: [
 
+        ],
       )),
     );
   }

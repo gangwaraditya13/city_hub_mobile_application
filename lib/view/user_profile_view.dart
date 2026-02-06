@@ -52,6 +52,13 @@ class _UserProfileViewState extends State<UserProfileView> {
     }
   }
 
+  Future<void> onTapDelete(String complaintId)async{
+    await _userViewModel.deleteUserComplaint(complaintId);
+    if( _userViewModel.apiDeleteUserComplaintResponse?.status == Status.COMPLETED) {
+     await _userViewModel.reloadUserDetail();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -464,36 +471,66 @@ class _UserProfileViewState extends State<UserProfileView> {
                                     ),
                                     Padding(
                                       padding: const EdgeInsets.all(4.0),
-                                      child: IconButton(
-                                        ///complaint edit
-                                        onPressed: () {
-                                          showDialog(
-                                            context: context,
-                                            builder: (context) => PostEdit(
-                                              complaintId: userComplaint[index]
-                                                  .sId,
-                                              imageUrl: userComplaint[index]
-                                                  .profilePhotoURL,
-                                              title: userComplaint[index]
-                                                  .complaintTitle,
-                                              category: userComplaint[index]
-                                                  .complaintCategory,
-                                              complaintToName:
-                                                  userComplaint[index]
-                                                      .complaintToName,
-                                              description: userComplaint[index]
-                                                  .complaintDescription,
-                                              imageId: userComplaint[index]
-                                                  .profileProductId,
+                                      child: Row(
+                                        mainAxisAlignment: .end,
+                                        children: [
+                                          Consumer<UserViewModel>(
+                                            builder: (context, value, child) {
+
+                                              if(value.apiDeleteUserComplaintResponse?.status == Status.LOADING){
+                                                return const CircularProgressIndicator();
+                                              }
+
+                                              if(value.apiDeleteUserComplaintResponse?.status == Status.ERROR){
+                                                return Row(
+                                                  children: [
+                                                    Text("Something Went wrong",style: TextStyle(color: Colors.red),),
+                                                    IconButton(onPressed: () => onTapDelete(userComplaint[index].sId.toString()),
+                                                        icon: Icon(
+                                                          Icons.refresh,
+                                                          size: MediaQuery.of(context).size.width/21,)),
+                                                  ],
+                                                );
+                                              }
+
+                                              return IconButton(onPressed: () => onTapDelete(userComplaint[index].sId.toString()),
+                                                  icon: Icon(
+                                                    Icons.delete,
+                                                    size: MediaQuery.of(context).size.width/21,));
+                                            },
+                                          ),
+                                          IconButton(
+                                            ///complaint edit
+                                            onPressed: () {
+                                              showDialog(
+                                                context: context,
+                                                builder: (context) => PostEdit(
+                                                  complaintId: userComplaint[index]
+                                                      .sId,
+                                                  imageUrl: userComplaint[index]
+                                                      .profilePhotoURL,
+                                                  title: userComplaint[index]
+                                                      .complaintTitle,
+                                                  category: userComplaint[index]
+                                                      .complaintCategory,
+                                                  complaintToName:
+                                                      userComplaint[index]
+                                                          .complaintToName,
+                                                  description: userComplaint[index]
+                                                      .complaintDescription,
+                                                  imageId: userComplaint[index]
+                                                      .profileProductId,
+                                                ),
+                                              );
+                                            },
+                                            icon: Icon(
+                                              Icons.edit,
+                                              color: Theme.of(
+                                                context,
+                                              ).colorScheme.primary,
                                             ),
-                                          );
-                                        },
-                                        icon: Icon(
-                                          Icons.edit,
-                                          color: Theme.of(
-                                            context,
-                                          ).colorScheme.primary,
-                                        ),
+                                          ),
+                                        ],
                                       ),
                                     ),
                                   ],

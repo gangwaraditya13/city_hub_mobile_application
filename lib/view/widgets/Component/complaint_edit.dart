@@ -27,7 +27,6 @@ class PostEdit extends StatefulWidget {
 
 class _PostEditState extends State<PostEdit> {
 
-  // UtilityComplaintType? selectedUtility;
   late TextEditingController _titleTextEditingController;
   late TextEditingController _descriptionTextEditingController;
   late TextEditingController _complaintToNameTextEditingController;
@@ -152,42 +151,6 @@ class _PostEditState extends State<PostEdit> {
             child: Column(
               crossAxisAlignment: .start,
               children: [
-                // Row(
-                //   mainAxisAlignment: .spaceBetween,
-                //   children: [
-                //     DropdownButtonHideUnderline(
-                //       child: DropdownButton<UtilityComplaintType>(
-                //         borderRadius: BorderRadius.circular(15),
-                //         elevation: 4,
-                //         value: selectedUtility,
-                //         hint: Text(
-                //           '${widget.category}',
-                //           style: TextStyle(
-                //             color: Theme.of(context).colorScheme.primary,
-                //           ),
-                //         ),
-                //         icon: Icon(
-                //           Icons.keyboard_arrow_down,
-                //           color: Theme.of(context).colorScheme.primary,
-                //         ),
-                //         items: UtilityComplaintType.values.map((type) {
-                //           return DropdownMenuItem(
-                //             value: type,
-                //             child: Text(type.name,style: TextStyle(
-                //               color: Theme.of(context).colorScheme.primary,
-                //             ),),
-                //           );
-                //         }).toList(),
-                //         onChanged: (value) {
-                //           setState(() {
-                //             selectedUtility = value;
-                //           });
-                //         },
-                //       ),
-                //     ),
-                //
-                //   ],
-                // ),
                 Padding(
                   padding: const EdgeInsets.only(top: 8.0),
                   child: Row(
