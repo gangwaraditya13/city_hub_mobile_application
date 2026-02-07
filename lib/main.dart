@@ -3,6 +3,7 @@ import 'package:city_hub/model_view/home_view_model.dart';
 import 'package:city_hub/model_view/image_view_model.dart';
 import 'package:city_hub/model_view/login_view_model.dart';
 import 'package:city_hub/model_view/signup_view_model.dart';
+import 'package:city_hub/model_view/theme_view_model.dart';
 import 'package:city_hub/model_view/token_view_model.dart';
 import 'package:city_hub/model_view/user_profile_view_model.dart';
 import 'package:city_hub/model_view/user_view_model.dart';
@@ -30,13 +31,19 @@ class MyApp extends StatelessWidget {
       ChangeNotifierProvider(create: (_) => HomeViewModel()),
       ChangeNotifierProvider(create: (_) => UserViewModel()),
       ChangeNotifierProvider(create: (_) => FacilityViewModel()),
-    ],child: MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'CityHub',
-      theme: lightMode,
-      darkTheme: darkMode,
-      initialRoute: RoutesName.Splash,
-      onGenerateRoute: Routes.generateRoute,
+      ChangeNotifierProvider(create: (_) => ImageViewModel()),
+      ChangeNotifierProvider(create: (_) => ThemeViewModel()),
+    ],child: Consumer<ThemeViewModel>(
+      builder: (context, themeViewModel, _) {
+        return MaterialApp(
+          debugShowCheckedModeBanner: false,
+          title: 'CityHub',
+          theme: themeViewModel.themeData,
+          darkTheme: darkMode,
+          initialRoute: RoutesName.Splash,
+          onGenerateRoute: Routes.generateRoute,
+        );
+      },
     ),
     );
   }

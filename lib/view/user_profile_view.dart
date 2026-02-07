@@ -1,8 +1,11 @@
 import 'package:city_hub/data/response/status.dart';
+import 'package:city_hub/model_view/theme_view_model.dart';
 import 'package:city_hub/model_view/user_profile_view_model.dart';
 import 'package:city_hub/model_view/user_view_model.dart';
+import 'package:city_hub/resource/Theams/app_theme.dart';
 import 'package:city_hub/view/widgets/Component/app_owner_info.dart';
 import 'package:city_hub/view/widgets/Component/complaint_edit.dart';
+import 'package:city_hub/view/widgets/Component/delete_user.dart';
 import 'package:city_hub/view/widgets/Component/edit_user_detail.dart';
 import 'package:city_hub/view/widgets/Component/edit_user_profile_pic.dart';
 import 'package:city_hub/view/widgets/Component/update_password.dart';
@@ -21,8 +24,6 @@ class _UserProfileViewState extends State<UserProfileView> {
   late UserProfileViewModel _profileViewModel;
   late UserViewModel _userViewModel;
 
-  ValueNotifier<bool> _valueNotifier = ValueNotifier(false);
-
   @override
   void initState() {
     _profileViewModel = context.read<UserProfileViewModel>();
@@ -31,12 +32,6 @@ class _UserProfileViewState extends State<UserProfileView> {
       _userViewModel.getUserDetail();
     });
     super.initState();
-  }
-
-  @override
-  void dispose() {
-    _valueNotifier.dispose();
-    super.dispose();
   }
 
 
@@ -109,8 +104,8 @@ class _UserProfileViewState extends State<UserProfileView> {
                           value.apiUserModelResponse?.data?.profilePhotoURL;
 
                       final profilePic =
-                          (imageProfilePic == null || imageProfilePic.isEmpty)
-                          ? "https://media.istockphoto.com/id/2151669184/vector/vector-flat-illustration-in-grayscale-avatar-user-profile-person-icon-gender-neutral.jpg"
+                          (imageProfilePic!.isEmpty)
+                          ? "https://media.istockphoto.com/id/2151669184/vector/vector-flat-illustration-in-grayscale-avatar-user-profile-person-icon-gender-neutral.jpg?s=612x612&w=0&k=20&c=UEa7oHoOL30ynvmJzSCIPrwwopJdfqzBs0q69ezQoM8="
                           : imageProfilePic;
 
                       return CircleAvatar(
@@ -133,29 +128,32 @@ class _UserProfileViewState extends State<UserProfileView> {
                   title: Text("Update Password"),
                   leading: Icon(Icons.password),
                 ),
-                ValueListenableBuilder(
-                  valueListenable: _valueNotifier,
-                  builder: (context, value, child) => ListTile(
-                    title: Text("Mode"),
-                    leading: Icon(
-                      _valueNotifier.value ? Icons.dark_mode : Icons.light_mode,
-                    ),
-                    trailing: IconButton(
-                      onPressed: () {
-                        if (_valueNotifier.value) {
-                          _valueNotifier.value = false;
-                        } else {
-                          _valueNotifier.value = true;
-                        }
-                      },
-                      icon: Icon(
-                        _valueNotifier.value
-                            ? Icons.toggle_on
-                            : Icons.toggle_off,
-                        size: 45,
+                Consumer<ThemeViewModel>(
+                  builder: (context, themeVM, _) {
+                    final isDark = themeVM.themeData == darkMode;
+
+                    return ListTile(
+                      title: const Text("Mode"),
+                      leading: Icon(isDark ? Icons.dark_mode : Icons.light_mode),
+                      trailing: IconButton(
+                        onPressed: () {
+                          themeVM.toggleTheme();
+                        },
+                        icon: Icon(
+                          isDark ? Icons.toggle_on : Icons.toggle_off,
+                          size: 45,
+                        ),
                       ),
-                    ),
-                  ),
+                    );
+                  },
+                ),
+                ListTile(
+                  ///making dialogBox
+                  onTap: () {
+                    showDialog(context: context, builder: (context) => DeleteUser(),);
+                  },
+                  title: Text("Delete User"),
+                  leading: Icon(Icons.delete_forever),
                 ),
                 ListTile(
                   ///making dialogBox
@@ -233,7 +231,7 @@ class _UserProfileViewState extends State<UserProfileView> {
                     ],
                   ),
                   Container(
-                    height: MediaQuery.of(context).size.height * 0.18,
+                    height: MediaQuery.of(context).size.height * 0.19,
                     width: double.infinity,
                     decoration: BoxDecoration(
                       color: Theme.of(context).colorScheme.secondary,

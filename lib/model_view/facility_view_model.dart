@@ -9,6 +9,16 @@ class FacilityViewModel with ChangeNotifier{
 
   ApiResponse<CityInfoModel>? apiOwnCityInfoResponse;
 
+  int _selectViewFacility = 0;
+
+
+  int get selectViewFacility => _selectViewFacility;
+
+  set selectViewFacility(int value) {
+    _selectViewFacility = value;
+    notifyListeners();
+  }
+
   Future<void> getOwnCityInfo()async{
     apiOwnCityInfoResponse = ApiResponse.loading();
     notifyListeners();
