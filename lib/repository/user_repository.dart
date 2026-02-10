@@ -31,6 +31,17 @@ class UserRepository {
     }
   }
 
+  Future<dynamic> deleteUserPermanently(UserModel userModel)async{
+    try{
+      final response = await _baseApiServices.getPostApiResponse(AppUrls.userDeleteUrl, userModel.toJsonDelete(),withAuth: true);
+      return response;
+    }on AppExceptions{
+      rethrow;
+    }catch(e){
+      throw Exception("unable Delete User");
+    }
+  }
+
   Future<dynamic> updatePassword(UserModel userModel)async{
     try{
       final response = await _baseApiServices.getPutApiResponse(AppUrls.userPasswordUpdateUrl, userModel.toJsonUpdatePassword(),withAuth: true);
