@@ -10,6 +10,7 @@ class UserViewModel with ChangeNotifier{
 
   ApiResponse<UserModel>? apiUserModelResponse;
   ApiResponse<void>? apiUpdateUserModelResponse;
+  ApiResponse<void>? apiUserDeletePermanentResponse;
   ApiResponse<void>? apiUpdateUserComplaintResponse;
   ApiResponse<void>? apiDeleteUserComplaintResponse;
   ApiResponse<void>? apiUpdateUserModelProfilePicResponse;
@@ -37,6 +38,19 @@ class UserViewModel with ChangeNotifier{
       notifyListeners();
     }catch(e){
       apiUpdateUserModelResponse = ApiResponse.error(e.toString());
+      notifyListeners();
+    }
+  }
+
+  Future<void> deleteUserPermanently(UserModel userModel)async{
+    apiUserDeletePermanentResponse = ApiResponse.loading();
+    notifyListeners();
+    try{
+      await _userRepository.deleteUserPermanently(userModel);
+      apiUserDeletePermanentResponse = ApiResponse.completed(null);
+      notifyListeners();
+    }catch(e){
+      apiUserDeletePermanentResponse = ApiResponse.error(e.toString());
       notifyListeners();
     }
   }
