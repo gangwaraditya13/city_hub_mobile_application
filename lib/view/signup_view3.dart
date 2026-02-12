@@ -68,11 +68,9 @@ class _SignupView3State extends State<SignupView3> {
                   onChange: (value) {
                     if (value.length < 2) {
                       values.clearSuggestions();
-                      print(".. = " + value);
                       return;
                     }
                     values.searchCity(value);
-                    print(value);
                   },
                 ),
                 Container(

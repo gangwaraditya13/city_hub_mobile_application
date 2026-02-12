@@ -73,14 +73,14 @@ class UserModel {
     return data;
   }
 
-  Map<String, dynamic> toJsonUpdatePassword() {
+  Map<String, dynamic> toJsonUpdateProfilePic() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['profilePhotoURL'] = this.profilePhotoURL;
     data['profileProductId'] = this.profileProductId;
     return data;
   }
 
-  Map<String, dynamic> toJsonUpdateProfilePic() {
+  Map<String, dynamic> toJsonUpdatePassword() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['oldPassword'] = this.password;
     data['newPassword'] = this.newPassword;
@@ -92,6 +92,13 @@ class UserModel {
     data['password'] = this.password;
     return data;
   }
+
+  @override
+  String toString() {
+    return 'UserModel{name: $name, email: $email, password: $password, newPassword: $newPassword, phone: $phone, idProof: $idProof, profilePhotoURL: $profilePhotoURL, profileProductId: $profileProductId, address: $address, city: $city, suspend: $suspend, sId: $sId}';
+  }
+
+
 }
 
 class ComplaintList {

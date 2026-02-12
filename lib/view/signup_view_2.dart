@@ -107,7 +107,7 @@ class _SignupView2State extends State<SignupView2> {
                     valueListenable: _valueNotifier1,
                     builder: (context, value, child) => UserInputTextField(
                       textEditingControlleroller: _password2TextEditingController,
-                      lableText: "RePassword",
+                      lableText: "Conform Password",
                       keybordType: .emailAddress,
                       obscureText: value,
                       suffixIcon: IconButton(onPressed: (){
@@ -151,7 +151,7 @@ class _SignupView2State extends State<SignupView2> {
                           if(_formKey.currentState!.validate()) {
                             value.userFlowModel.email = _emailTextEditingController.text.toString().trim();
                             value.userFlowModel.password = _password1TextEditingController.text.toString().trim();
-                            value.userFlowModel.profilePhotoURL = "https://res.cloudinary.com/dx3wtw7pf/image/upload/v1756753309/def_profile_pic_nu8tlc.png";
+                            value.userFlowModel.profilePhotoURL = "";
                             value.userFlowModel.profileProductId = "";
                             Navigator.pushNamed(context, "signup3_view");
                           }

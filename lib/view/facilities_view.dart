@@ -59,15 +59,6 @@ class _FacilitiesViewState extends State<FacilitiesView> {
                       }, icon: Icon(Icons.real_estate_agent)),
                     ],
                   ),
-                  Container(
-                    height: MediaQuery.of(context).size.height/19,
-                    width: MediaQuery.of(context).size.height/5,
-                    decoration: BoxDecoration(
-                      color: Colors.grey,
-                      borderRadius: BorderRadius.circular(19)
-                    ),
-                    child: Center(child: Text("City Search")),
-                  ),
                 ],
               )),
           Consumer<FacilityViewModel>(

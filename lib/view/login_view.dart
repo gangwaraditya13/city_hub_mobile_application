@@ -140,11 +140,6 @@ class _LoginViewState extends State<LoginView> {
                                                   .toString()
                                                   .trim(),
                                         );
-
-                                    if (kDebugMode) {
-                                      print(loginRequestModel.toJson());
-                                    }
-
                                     value.login(loginRequestModel);
                                   }
                                 },
